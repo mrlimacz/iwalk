@@ -11,8 +11,10 @@
             "program": "${workspaceFolder}/src/iwalk/__init__.py",
             "console": "integratedTerminal",
             "preLaunchTask": "uv sync",
+            "justMyCode": true,
             "args": [
-                "--verbose"
+                "--verbose",
+                "~/Downloads/t"
             ]
         }
     ]

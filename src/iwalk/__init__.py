@@ -25,6 +25,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "-v", "--verbose", action="store_true", help="Use more detailed logging"
     )
+    parser.add_argument(
+        "--skip-exif",
+        action="store_true",
+        help="Skip exif check for ContentIdentifier and BurstUUID",
+    )
 
     return parser.parse_args()
 
@@ -32,7 +37,7 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
     setup_logging(args.verbose)
-    run_iwalk(path=args.path)
+    run_iwalk(path=args.path, skip_exif=args.skip_exif)
 
 
 if __name__ == "__main__":
