@@ -1,80 +1,107 @@
-EXCLUDED_TYPES = ["O.AAE"]
-EXIF_TAGS = ["BurstUUID", "ContentIdentifier"]
-SUPPORTED_ASSET_TYPES = {
-    "edited_heic": {
+from typing import TypedDict, NotRequired
+
+EXCLUDED_TYPES: list[str] = ["O.AAE"]
+EXIF_TAGS: list[str] = ["BurstUUID", "ContentIdentifier"]
+INDEX_COLS: list[str] = ["dir", "obj_name", "is_patterned"]
+
+
+class AssetType(TypedDict):
+    name: str
+    file_count: int
+    obj_types: list[str]
+    to_be_loaded: NotRequired[list[str]]
+
+
+SUPPORTED_ASSET_TYPES: list[AssetType] = [
+    {
+        "name": "edited_heic",
         "file_count": 2,
         "obj_types": ["E.HEIC", "O.HEIC"],
         "to_be_loaded": ["E.HEIC"],
     },
-    "original_heic": {
+    {
+        "name": "original_heic",
         "file_count": 1,
         "obj_types": ["O.HEIC"],
         "to_be_loaded": ["O.HEIC"],
     },
-    "edited_jpg": {
+    {
+        "name": "edited_jpg",
         "file_count": 2,
         "obj_types": ["E.JPG", "O.JPG"],
         "to_be_loaded": ["E.JPG"],
     },
-    "original_jpg": {
+    {
+        "name": "original_jpg",
         "file_count": 1,
         "obj_types": ["O.JPG"],
         "to_be_loaded": ["O.JPG"],
     },
-    "edited_mov": {
+    {
+        "name": "edited_mov",
         "file_count": 2,
         "obj_types": ["E.MOV", "O.MOV"],
         "to_be_loaded": ["E.MOV"],
     },
-    "original_mov": {
+    {
+        "name": "original_mov",
         "file_count": 1,
         "obj_types": ["O.MOV"],
         "to_be_loaded": ["O.MOV"],
     },
-    "edited_jpg_original_heic": {
+    {
+        "name": "edited_jpg_original_heic",
         "file_count": 2,
         "obj_types": ["E.JPG", "O.HEIC"],
         "to_be_loaded": ["E.JPG"],
     },
-    "edited_screenshot": {
+    {
+        "name": "edited_screenshot",
         "file_count": 2,
         "obj_types": ["E.JPG", "O.PNG"],
-        "to_be_loaded": None,
     },
-    "original_screenshot": {
+    {
+        "name": "original_screenshot",
         "file_count": 1,
         "obj_types": ["O.PNG"],
-        "to_be_loaded": None,
     },
-    "original_webp": {
+    {
+        "name": "original_webp",
         "file_count": 1,
         "obj_types": ["O.WEBP"],
-        "to_be_loaded": None,
     },
-    "original_gif": {"file_count": 1, "obj_types": ["O.GIF"], "to_be_loaded": None},
-    "original_screen_recording": {
+    {
+        "name": "original_gif",
+        "file_count": 1,
+        "obj_types": ["O.GIF"],
+    },
+    {
+        "name": "original_screen_recording",
         "file_count": 1,
         "obj_types": ["O.MP4"],
-        "to_be_loaded": None,
     },
-    "live_photo": {
+    {
+        "name": "live_photo",
         "file_count": 2,
         "obj_types": ["O.MOV", "O.HEIC"],
         "to_be_loaded": ["O.MOV", "O.HEIC"],
     },
-    "live_photo_jpg": {
+    {
+        "name": "live_photo_jpg",
         "file_count": 2,
         "obj_types": ["O.MOV", "O.JPG"],
         "to_be_loaded": ["O.MOV", "O.JPG"],
     },
-    "live_photo_edited": {
+    {
+        "name": "live_photo_edited",
         "file_count": 2,
         "obj_types": ["E.MOV", "E.HEIC"],
         "to_be_loaded": ["E.MOV", "E.HEIC"],
     },
-    "live_photo_edited_jpg": {
+    {
+        "name": "live_photo_edited_jpg",
         "file_count": 2,
         "obj_types": ["E.MOV", "E.JPG"],
         "to_be_loaded": ["E.MOV", "E.JPG"],
     },
-}
+]
