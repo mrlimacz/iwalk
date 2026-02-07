@@ -150,6 +150,7 @@ def _group_results(df: pl.DataFrame) -> pl.DataFrame:
         pl.col("group_id").n_unique().alias("asset_count"),
         pl.col("to_be_loaded").sum().alias("file_count"),
     )
+
     logger.info(
         f"===========================================================================\n"
         f"SUMMARY\n"
@@ -163,6 +164,8 @@ def _group_results(df: pl.DataFrame) -> pl.DataFrame:
 
 
 def run_iwalk(path: Path, skip_exif: bool) -> list[str] | None:
+    pl.Config.set_tbl_rows(-1)
+
     logger.info(f"Analyzing files in {path.as_posix()}")
 
     # Validate input path
