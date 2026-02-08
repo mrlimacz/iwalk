@@ -4,6 +4,7 @@ from os import walk
 import polars as pl
 from exiftool import ExifToolHelper
 from iwalk.constants import EXCLUDED_TYPES, EXIF_TAGS, INDEX_COLS, SUPPORTED_ASSET_TYPES
+import sys
 
 logger = logging.getLogger(__name__)
 
@@ -152,9 +153,9 @@ def _group_results(df: pl.DataFrame) -> pl.DataFrame:
     )
 
     logger.info(
-        f"===========================================================================\n"
+        f"========================================================================\n"
         f"SUMMARY\n"
-        f"===========================================================================\n"
+        f"========================================================================\n"
         f"Total files: {summary['file_count'].sum()}\n"
         f"Total assets: {summary['asset_count'].sum()}\n"
         f"Details: {summary}"
@@ -163,7 +164,13 @@ def _group_results(df: pl.DataFrame) -> pl.DataFrame:
     return df
 
 
-def run_iwalk(path: Path, skip_exif: bool) -> list[str] | None:
+def _filter_files_to_load(df: pl.DataFrame) -> None:
+    paths = df.filter(pl.col("to_be_loaded")).get_column("file_path").to_list()
+    for p in paths:
+        sys.stdout.write(p.as_posix() + "\0")
+
+
+def run_iwalk(path: Path, skip_exif: bool):
     pl.Config.set_tbl_rows(-1)
 
     logger.info(f"Analyzing files in {path.as_posix()}")
@@ -183,4 +190,5 @@ def run_iwalk(path: Path, skip_exif: bool) -> list[str] | None:
     # Group results
     df = _group_results(df)
 
-    return list(map(lambda x: x.as_posix(), df["file_path"].to_list()))
+    # Print to stdout
+    _filter_files_to_load(df)
