@@ -149,14 +149,16 @@ def _group_results(df: pl.DataFrame) -> pl.DataFrame:
 
     summary = df.group_by("asset_type").agg(
         pl.col("group_id").n_unique().alias("asset_count"),
-        pl.col("to_be_loaded").sum().alias("file_count"),
+        pl.col("to_be_loaded").count().alias("file_count_total"),
+        pl.col("to_be_loaded").sum().alias("file_count_to_load"),
     )
 
     logger.info(
         f"========================================================================\n"
         f"SUMMARY\n"
         f"========================================================================\n"
-        f"Total files: {summary['file_count'].sum()}\n"
+        f"Total files: {summary['file_count_total'].sum()}\n"
+        f"Files to load: {summary['file_count_to_load'].sum()}\n"
         f"Total assets: {summary['asset_count'].sum()}\n"
         f"Details: {summary}"
     )
