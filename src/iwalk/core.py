@@ -148,7 +148,12 @@ def _group_results(df: pl.DataFrame) -> pl.DataFrame:
         raise NotImplementedError(f"Found unsupported asset types:\n{null_check}")
 
     summary = df.group_by("asset_type").agg(
-        pl.col("group_id").n_unique().alias("asset_count"),
+        pl.when(pl.col("to_be_loaded"))
+        .then(pl.col("group_id"))
+        .otherwise(pl.lit(None))
+        .drop_nulls()
+        .n_unique()
+        .alias("asset_count"),
         pl.col("to_be_loaded").count().alias("file_count_total"),
         pl.col("to_be_loaded").sum().alias("file_count_to_load"),
     )
